@@ -1,3 +1,5 @@
+import { doesNotReject } from "assert";
+
 asyncAnswers = {
   /**
    * Asynchronously returns a value via a promise. Example:
@@ -7,7 +9,14 @@ asyncAnswers = {
    * @returns {then: function} A promise like object containing a then property.
    */
   async: function async(value) {
-
+    fetch(value)
+    .then(res => {
+      if (res.status == 200) {
+        return res.json();
+      } else {
+        throw new Error (res.status);
+      }
+    });
   },
 
   /**
@@ -21,6 +30,11 @@ asyncAnswers = {
    * @returns {then: function} A promise like object containing a then property.
    */
   manipulateRemoteData: function manipulateRemoteData(url) {
-
+    fetch(url)
+    .then(res => {
+      return res.json();
+    })
+    .then(data => data.sort());
+    return data;
   },
 };
